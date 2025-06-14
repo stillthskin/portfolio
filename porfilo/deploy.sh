@@ -10,5 +10,5 @@ git push origin main
 echo "Deployment complete!"
 
 
-scp -r build/* root@152.42.170.93:/var/www/html/dennis
+scp -r dist/* root@152.42.170.93:/var/www/html/dennis
 echo "Files copied to server!"
