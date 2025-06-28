@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import NotFound from './components/NotFound';
+import career from './components/career';
 import './App.css'; 
+import { Intro, Footer, Career, NotFound } from './components/imports.js';
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -14,12 +16,10 @@ function App() {
   return (
     <div>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-         <main>
-        <Routes>
-
-          {/* <Route path="*" element={<NotFound />} />  */}
-        </Routes>
-      </main>
+       <Intro />
+      <Career />
+      <Footer />
+     
     </div>
   );
 }
