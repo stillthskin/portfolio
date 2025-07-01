@@ -9,8 +9,7 @@ function Footer() {
           © {new Date().getFullYear()} Porfilo. All rights reserved.
         </p>
         <p className="tp2">
-          Made with ❤️ by the Porfilo Team
-        </p>
+          Kenda        </p>
       </div>
     </footer>
   );
