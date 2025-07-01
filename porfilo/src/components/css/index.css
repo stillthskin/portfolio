@@ -34,7 +34,8 @@
 .container{
     display: grid;
     width:100%;
-  grid-template-columns: 1fr 1px 1fr;}
+  grid-template-columns: 1fr 1px 1fr;
+}
 .component{
     padding: 0 20px 20px 20px;
 }
@@ -49,7 +50,7 @@
 
 .component_middle{
     position: relative;
-    background-color: yellow;
+    background-color: #FFC107;
 }
 .date_right{
     text-align: right;
@@ -80,7 +81,29 @@
     /* padding:0 15px 15px 15px; */
     align-items: center;
     border-radius: 20px;
+    box-shadow:
+  0 6px 20px rgba(0, 0, 0, 0.3),
+  0 0 15px rgba(255, 255, 255, 0.18);
+
 }
+.button {
+  background-color: #FFC107;           /* Amber base */
+  color: #111111;                      /* Dark text for contrast */
+  padding: 12px 24px;
+  width: 200px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); /* Amber glow */
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  box-shadow: 0 6px 16px rgba(255, 193, 7, 0.5);
+  transform: translateY(-2px);
+}
+
 
 /* .achivement h4{
     text-align: center;

@@ -6,10 +6,8 @@ function Footer() {
     <footer className="footer">
       <div className="foot">
         <p className="p1">
-          © {new Date().getFullYear()} Porfilo. All rights reserved.
+          © {new Date().getFullYear()} <strong>KENDA</strong>. All rights reserved.
         </p>
-        <p className="tp2">
-          Kenda        </p>
       </div>
     </footer>
   );

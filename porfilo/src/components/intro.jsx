@@ -9,6 +9,7 @@ function Intro() {
         I am a passionate developer with a love for creating innovative solutions.
         Explore my projects and get to know more about my work.
       </p>
+      <button className='button' >Download cv</button>
     </div>
   );
 }
