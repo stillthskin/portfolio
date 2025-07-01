@@ -18,7 +18,7 @@ function Career() {
                         <div className="timeline_dot"></div>
                     </div>
                     <div className="component">
-                        <div className="timeline_date achivement"><h4><b><u>Smart-People Africa Ltd</u></b></h4>
+                        <div className="timeline_left achivement"><h4><b><u>Smart-People Africa Ltd</u></b></h4>
                             <ul>
                                 <li>• Design and implement server-side logic using Java and Tomcat.</li>
                                 <li>• Develop and maintain database schema and queries using PostgreSQL.</li>
@@ -33,7 +33,7 @@ function Career() {
                         </div>
                     </div>
                     <div className="component">
-                        <div className="timeline_date achivement"><h4><b><u>Kenya Institute of Public Policy Research & Analysis(KIPPRA)</u></b></h4>
+                        <div className="timeline_right achivement"><h4><b><u>Kenya Institute of Public Policy Research & Analysis(KIPPRA)</u></b></h4>
                             <ul>
                                 <li>• Reviewed diagnostics and assessed the functionality and efficiency of systems.</li>
                                 <li>• Implemented security measures and monitored security certificates.</li>
@@ -59,7 +59,7 @@ function Career() {
                         <div className="timeline_dot timeline_dot--bottom"></div>
                     </div>
                     <div className="component">
-                        <div className="timeline_date achivement"><h4><b><u>National Treasury(PFMR)</u></b></h4>
+                        <div className="timeline_left achivement"><h4><b><u>National Treasury(PFMR)</u></b></h4>
                             <ul>
                                 <li>• Support the IT team in maintaining hardware, software, and other systems.</li>
                                 <li>• Assist with troubleshooting issues and provide technical support.</li>
