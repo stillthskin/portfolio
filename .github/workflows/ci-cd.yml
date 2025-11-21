@@ -24,28 +24,32 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: './portfolio/package-lock.json'  # Updated path
+          # REMOVED cache line - we'll handle it manually
 
       - name: Install dependencies
         run: |
-          cd porfilo  # Change to portfolio directory
-          npm ci
+          cd portfolio
+          # Check if lock file exists
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run tests
         run: |
-          cd porfilo
+          cd portfolio
           npm test -- --coverage --watchAll=false || echo "No tests configured"
 
       - name: Build application
         run: |
-          cd porfilo
+          cd portfolio
           mkdir -p build
           npm run build
 
       - name: Lint
         run: |
-          cd porfilo
+          cd portfolio
           npm run lint || echo "No linting configured"
 
   # -----------------------------------------------
@@ -67,8 +71,13 @@ jobs:
 
       - name: Build React app
         run: |
-          cd porfilo  # Change to portfolio directory
-          npm ci
+          cd portfolio
+          # Check if lock file exists
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
           mkdir -p build
           npm run build
 
@@ -88,14 +97,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./portfolio  # Updated context to portfolio folder
+          context: ./portfolio
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
             NODE_ENV=production
-          file: ./portfolio/Dockerfile  # Specify Dockerfile path if it's in portfolio folder
 
   # -----------------------------------------------
   # 🚀 DEPLOY TO SERVER
