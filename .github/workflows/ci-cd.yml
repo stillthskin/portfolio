@@ -2,9 +2,9 @@ name: React CI/CD
 
 on:
   pull_request:
-    branches: ["**"]
+    branches: [ "**" ]
   push:
-    branches: [main]
+    branches: [ main ]
 
 env:
   IMAGE_NAME: ghcr.io/stillthskin/stillfrontend
@@ -125,10 +125,9 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST bash << 'EOF'
-echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-docker pull $IMAGE
-docker stop react-app || true
-docker rm react-app || true
-docker run -d --name react-app -p 80:80 --restart unless-stopped $IMAGE
-EOF
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST \
+            "echo '$GHCR_TOKEN' | docker login ghcr.io -u '$GITHUB_ACTOR' --password-stdin && \
+             docker pull $IMAGE && \
+             docker stop react-app || true && \
+             docker rm react-app || true && \
+             docker run -d --name react-app -p 80:80 --restart unless-stopped $IMAGE"
