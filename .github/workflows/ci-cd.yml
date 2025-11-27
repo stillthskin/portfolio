@@ -10,9 +10,6 @@ env:
   IMAGE_NAME: ghcr.io/stillthskin/stillfrontend
 
 jobs:
-  # -----------------------------------------------
-  # 🧪 TEST & BUILD
-  # -----------------------------------------------
   test:
     name: Run tests & build
     runs-on: ubuntu-latest
@@ -42,7 +39,6 @@ jobs:
       - name: Build application
         run: |
           cd portfolio
-          mkdir -p build
           npm run build
 
       - name: Lint
@@ -50,9 +46,6 @@ jobs:
           cd portfolio
           npm run lint || echo "No linting configured"
 
-  # -----------------------------------------------
-  # 🧱 BUILD & PUSH DOCKER IMAGE
-  # -----------------------------------------------
   build_and_push:
     name: Build & Push Docker image
     runs-on: ubuntu-latest
@@ -78,7 +71,6 @@ jobs:
           else
             npm install
           fi
-          mkdir -p build
           npm run build
 
       - name: Set up QEMU
@@ -94,7 +86,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: ./portfolio
@@ -105,9 +97,6 @@ jobs:
           build-args: |
             NODE_ENV=production
 
-  # -----------------------------------------------
-  # 🚀 DEPLOY TO SERVER
-  # -----------------------------------------------
   deploy:
     name: Deploy to server via SSH
     runs-on: ubuntu-latest
@@ -124,7 +113,7 @@ jobs:
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
       - name: Deploy container
@@ -135,11 +124,10 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
-              ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST bash << 'EOF'
-                docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin <<< "$GHCR_TOKEN"
-                docker pull $IMAGE
-                docker stop react-app || true
-                docker rm react-app || true
-                docker run -d --name react-app -p 80:80 $IMAGE
-        EOF
-
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST bash << 'EOF'
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+            docker pull $IMAGE
+            docker stop react-app || true
+            docker rm react-app || true
+            docker run -d --name react-app -p 80:80 $IMAGE
+            EOF
