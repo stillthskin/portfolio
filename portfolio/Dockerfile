@@ -4,7 +4,7 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 RUN npm run build
@@ -12,9 +12,10 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy build output (dist or build depending on your setup)
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration if needed
+# Optional: custom nginx config
 # COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
