@@ -12,10 +12,10 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-# Copy build output (dist or build depending on your setup)
-COPY --from=build /app/dist /usr/share/nginx/html
+# Copy build output - changed from /app/dist to /app/build
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Optional: custom nginx config
+# Copy custom nginx config if needed
 # COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
