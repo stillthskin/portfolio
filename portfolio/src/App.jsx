@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import career from './components/career';
+// REMOVE THIS LINE: import career from './components/career';
 import './App.css'; 
 import { Intro, Footer, Career, NotFound } from './components/imports.js';
 
