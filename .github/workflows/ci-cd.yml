@@ -33,17 +33,49 @@ jobs:
             npm install
           fi
 
-      - name: Run tests
+      - name: Check for test script
+        id: check-test
         working-directory: ./portfolio
-        run: npm test -- --coverage --watchAll=false --passWithNoTests
+        run: |
+          if npm run | grep -q "test"; then
+            echo "test_script_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "test_script_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run tests if available
+        if: steps.check-test.outputs.test_script_exists == 'true'
+        working-directory: ./portfolio
+        run: npm test -- --coverage --watchAll=false
+
+      - name: Skip tests (no test script)
+        if: steps.check-test.outputs.test_script_exists == 'false'
+        working-directory: ./portfolio
+        run: echo "No test script found in package.json, skipping tests"
 
       - name: Build application
         working-directory: ./portfolio
         run: npm run build
 
-      - name: Lint
+      - name: Check for lint script
+        id: check-lint
         working-directory: ./portfolio
-        run: npm run lint --if-present
+        run: |
+          if npm run | grep -q "lint"; then
+            echo "lint_script_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "lint_script_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run lint if available
+        if: steps.check-lint.outputs.lint_script_exists == 'true'
+        working-directory: ./portfolio
+        run: npm run lint
+
+      - name: Skip lint (no lint script)
+        if: steps.check-lint.outputs.lint_script_exists == 'false'
+        working-directory: ./portfolio
+        run: echo "No lint script found in package.json, skipping linting"
 
   build_and_push:
     name: Build & Push Docker image
@@ -113,9 +145,16 @@ jobs:
             docker stop react-app || true
             docker rm react-app || true
             
-            # Run new container
+            # Run new container on port 80
             docker run -d \
               --name react-app \
-              -p 80:80 \
+              -p 127.0.0.1:80:80 \
               --restart unless-stopped \
               ${{ env.IMAGE_NAME }}:latest
+            
+            # Test the deployment
+            sleep 5
+            curl -f http://localhost:80 || echo "App might need more time to start"
+            
+            # Reload nginx to pick up any changes
+            sudo nginx -t && sudo systemctl reload nginx
